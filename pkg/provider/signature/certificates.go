@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-
+	"github.com/zitadel/logging"
 	"github.com/amdonov/xmlsig"
 	dsig "github.com/russellhaering/goxmldsig"
 )
@@ -22,6 +22,7 @@ func ParseCertificates(certStrs []string) ([]*x509.Certificate, error) {
 		certStr = regex.ReplaceAllString(certStr, "")
 		certStr = strings.TrimPrefix(strings.TrimSuffix(certStr, "-----ENDCERTIFICATE-----"), "-----BEGINCERTIFICATE-----")
 		certBytes, err := base64.StdEncoding.DecodeString(certStr)
+		logging.Errorf("error with value length %s", certBytes)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse PEM block containing the public key")
 		}
